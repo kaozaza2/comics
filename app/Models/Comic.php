@@ -4,10 +4,12 @@ namespace App\Models;
 
 use App\Models\Enumerations\ComicAgeRating;
 use App\Models\Enumerations\ComicType;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 class Comic extends Model
 {
@@ -52,5 +54,19 @@ class Comic extends Model
     {
         return $this->belongsToMany(User::class, 'maintainers')
             ->withPivot('role');
+    }
+
+    public function thumb(): Attribute
+    {
+        return Attribute::make(
+            fn () => Storage::url($this->thumb_path),
+        );
+    }
+
+    public function cover(): Attribute
+    {
+        return Attribute::make(
+            fn () => Storage::url($this->cover_path),
+        );
     }
 }

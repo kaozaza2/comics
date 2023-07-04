@@ -15,12 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->enum('type', []);
+            $table->enum('type', ['comic', 'manga']);
             $table->string('slug')->unique();
             $table->json('writers')->nullable();
             $table->json('artists')->nullable();
             $table->string('language')->nullable();
-            $table->enum('age_rating', []);
+            $table->enum('age_rating', ['all_ages', 'teen_plus', 'teen', 'mature', 'explicit']);
             $table->timestamp('published_at')->nullable();
             $table->string('cover_path', 2048)->nullable();
             $table->string('thumb_path', 2048)->nullable();
