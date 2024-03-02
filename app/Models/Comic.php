@@ -2,28 +2,28 @@
 
 namespace App\Models;
 
-use App\Models\Enumerations\ComicAgeRating;
-use App\Models\Enumerations\ComicType;
+use App\Models\Enums\ComicType;
+use App\Models\Pivot\Maintainer;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
+use Laravel\Scout\Attributes\SearchUsingFullText;
+use Laravel\Scout\Searchable;
 
 class Comic extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
 
     protected $fillable = [
         'title',
-        'description',
+        'alias',
+        'synopsis',
         'type',
-        'slug',
-        'writers',
-        'artists',
-        'language',
-        'age_rating',
+        'nsfw',
+        'published_by',
         'published_at',
     ];
 
@@ -39,9 +39,6 @@ class Comic extends Model
 
     protected $casts = [
         'type' => ComicType::class,
-        'age_rating' => ComicAgeRating::class,
-        'writers' => 'array',
-        'artists' => 'array',
         'published_at' => 'datetime',
     ];
 
@@ -52,21 +49,32 @@ class Comic extends Model
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'maintainers')
-            ->withPivot('role');
+        return $this->belongsToMany(User::class)
+            ->using(Maintainer::class);
     }
 
     public function thumb(): Attribute
     {
         return Attribute::make(
-            fn () => Storage::url($this->thumb_path),
+            fn() => Storage::url($this->thumb_path),
         );
     }
 
     public function cover(): Attribute
     {
         return Attribute::make(
-            fn () => Storage::url($this->cover_path),
+            fn() => Storage::url($this->cover_path),
         );
+    }
+
+    public function searchableAs(): string
+    {
+        return 'comics_index';
+    }
+
+    #[SearchUsingFullText(['title', 'alias', 'synopsis'])]
+    public function toSearchableArray(): array
+    {
+        return $this->only($this->fillable);
     }
 }

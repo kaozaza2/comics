@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SearchRequest;
 use App\Models\Comic;
+use http\Env\Request;
 use Illuminate\Contracts\View\View as ViewContract;
 
 class ComicReaderController extends Controller
@@ -22,6 +24,11 @@ class ComicReaderController extends Controller
                 'comics' => $comics->paginate(20),
             ],
         );
+    }
+
+    public function search(SearchRequest $request)
+    {
+
     }
 
     public function reader(Comic $comic): ViewContract

@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('comics', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('description')->nullable();
-            $table->enum('type', ['comic', 'manga']);
-            $table->string('slug')->unique();
-            $table->json('writers')->nullable();
-            $table->json('artists')->nullable();
+            $table->string('alias')->nullable();
+            $table->text('synopsis')->nullable();
+            $table->string('type');
             $table->string('language')->nullable();
-            $table->enum('age_rating', ['all_ages', 'teen_plus', 'teen', 'mature', 'explicit']);
+            $table->boolean('nsfw')->default(0);
+            $table->string('status')->default('ongoing');
+            $table->unsignedBigInteger('published_by')->nullable();
             $table->timestamp('published_at')->nullable();
             $table->string('cover_path', 2048)->nullable();
             $table->string('thumb_path', 2048)->nullable();

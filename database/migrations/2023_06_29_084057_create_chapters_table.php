@@ -18,9 +18,7 @@ return new class extends Migration
             $table->string('episode');
             $table->text('description')->nullable();
             $table->unsignedInteger('order_column');
-            $table->json('pages')->nullable();
             $table->timestamp('published_at')->nullable();
-            $table->string('thumb_path', 2048)->nullable();
             $table->timestamps();
         });
     }

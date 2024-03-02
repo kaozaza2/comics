@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Comic;
-use App\Models\Enumerations\ComicAgeRating;
-use App\Models\Enumerations\ComicType;
+use App\Models\Enums\ComicAgeRating;
+use App\Models\Enums\ComicType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

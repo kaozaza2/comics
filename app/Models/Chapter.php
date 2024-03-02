@@ -16,21 +16,11 @@ class Chapter extends Model
         'description',
         'comic_id',
         'order_column',
-        'pages',
         'published_at',
     ];
 
     protected $casts = [
         'published_at' => 'datetime',
-        'pages' => 'array',
-    ];
-
-    protected $appends = [
-        'thumb',
-    ];
-
-    protected $hidden = [
-        'thumb_path',
     ];
 
     public function comic(): BelongsTo
